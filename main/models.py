@@ -11,6 +11,8 @@ class Student(models.Model):
 
     comment = models.TextField(verbose_name='комментарий менеджера', **NULLABLE)
 
+    is_active = models.BooleanField(default=True, verbose_name='активный')
+
     def __str__(self):
         return f'{self.first_name}, {self.last_name}'
 
