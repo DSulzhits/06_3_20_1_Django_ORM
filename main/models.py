@@ -1,11 +1,13 @@
 from django.db import models
 
+# null=True, blank=True это значит что данное поле может быть пустым, т.е. аватар не обязателен
+NULLABLE = {'blank': True, 'null': True}
 
-# Create your models here.
+
 class Student(models.Model):
-    first_name = models.CharField(max_length=150, verbose_name='имя')
-    last_name = models.CharField(max_length=150, verbose_name='фамилия')
-    avatar = models.ImageField(upload_to='students/', verbose_name='аватар')
+    first_name = models.CharField(max_length=150, verbose_name='имя')  # обязательно
+    last_name = models.CharField(max_length=150, verbose_name='фамилия')  # обязательно
+    avatar = models.ImageField(upload_to='students/', verbose_name='аватар', **NULLABLE)  # не обязательно т.к. есть **NULLABLE
 
     def __str__(self):
         return f'{self.first_name}, {self.last_name}'
