@@ -9,6 +9,8 @@ class Student(models.Model):
     last_name = models.CharField(max_length=150, verbose_name='фамилия')  # обязательно
     avatar = models.ImageField(upload_to='students/', verbose_name='аватар', **NULLABLE)  # не обязательно т.к. есть **NULLABLE
 
+    comment = models.TextField(verbose_name='комментарий менеджера', **NULLABLE)
+
     def __str__(self):
         return f'{self.first_name}, {self.last_name}'
 
