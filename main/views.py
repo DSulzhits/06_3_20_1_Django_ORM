@@ -19,6 +19,15 @@ def students(request):
     return render(request, 'main/students.html', context)
 
 
+def student(request, pk):
+    student_item = Student.objects.get(pk=pk)
+    context = {
+        'object': student_item,
+        'title': student_item.first_name + ' ' + student_item.last_name  # или так 'title': student_item
+    }
+    return render(request, 'main/student.html', context)
+
+
 def contacts(request):
     if request.method == "POST":
         name = request.POST.get('name')
