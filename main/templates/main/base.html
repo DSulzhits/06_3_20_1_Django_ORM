@@ -1,13 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <style>
         main {
             margin-top: 150px;
+            margin-left: 100px;
+            margin-right: 100px;
         }
     </style>
 </head>
@@ -29,15 +32,22 @@
             </div>
         </nav>
     </header>
+</div>
 
-    <main role="main">
-        <!-- Three columns of text below the carousel -->
-        <h1>{{ title }}</h1>
-        <div class="row">
-            {% block content %}
-            {% endblock %}
-        </div><!-- /.row -->
-    </main>
-
+<main role="main">
+    <!-- Three columns of text below the carousel -->
+    <h1>{{ title }}</h1>
+    <div class="row">
+        {% block content %}
+        {% endblock %}
+    </div><!-- /.row -->
+</main>
+{% block footer %}
+    <div class="row mb-5">
+        <div class="col-12">
+            (c) Dmitry
+        </div>
+    </div>
+{% endblock %}
 </body>
 </html>
