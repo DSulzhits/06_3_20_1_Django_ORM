@@ -16,6 +16,10 @@ class Student(models.Model):
     def __str__(self):
         return f'{self.first_name}, {self.last_name}'
 
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
+
     class Meta:
         verbose_name = 'студент'
         verbose_name_plural = 'студенты'
