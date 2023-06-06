@@ -1,7 +1,8 @@
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from main.models import Student
+from main.services import send_deactivate_email
 
 
 def index(request):
@@ -66,6 +67,18 @@ class StudentUpdateView(generic.UpdateView):
 class StudentDeleteView(generic.DeleteView):
     model = Student
     success_url = reverse_lazy('main:students_list')
+
+
+def toggle_activity(request, pk):
+    student_item = get_object_or_404(Student, pk=pk)
+    if student_item.is_active:
+        student_item.is_active = False
+        send_deactivate_email(student_item)
+    else:
+        student_item.is_active = True
+
+    student_item.save()
+    return redirect(reverse('main:student_item', args=[student_item.pk]))
 
 
 def contacts(request):
