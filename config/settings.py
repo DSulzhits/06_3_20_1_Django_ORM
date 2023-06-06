@@ -114,6 +114,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -122,6 +123,7 @@ STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
 
+
 MEDIA_URl = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -129,3 +131,15 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_HOST = 'smtp.yandex.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'dmitrysulzhits@yandex.by'
+yandex_password = os.getenv('YANDEX_PASSWORD')
+EMAIL_HOST_PASSWORD = yandex_password
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+"""у gmail наоборот
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+ """
