@@ -1,18 +1,46 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" class="btn btn-success" value="{% if object %}Сохранить{% else %}Создать{% endif %}">
-                </form>
+    <div class="col-12">
+        <form class="row" method="post" enctype="multipart/form-data">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Добавление/Изменение студента
+                        </h3>
+                        <div class="card-body">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="submit" class="btn btn-success"
+                                   value="{% if object %}Сохранить{% else %}Создать{% endif %}">
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'main:students_list' %}" class="btn btn-primary"><< Назад</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-footer">
-                <a href="{% url 'main:students_list' %}" class="btn btn-primary"><< Назад</a>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Предметы студента
+                        </h3>
+                        <div class="card-body">
+                            {{ formset.management_form }}
+                            {% for form in formset.forms %}
+                                {{ form.as_p }}
+                                {% if not forloop.last %}
+                                    <hr>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="card-footer">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 {% endblock %}
