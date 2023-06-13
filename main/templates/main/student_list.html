@@ -1,9 +1,9 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <diov class="col-12">
+    <div class="col-12">
         <a href="{% url 'main:students_create' %}" class="btn btn-primary m-2">Создать студента</a>
-    </diov>
+    </div>
     {% for object in object_list %}
         {% include 'main/includes/inc_student_card.html' %}
     {% endfor %}
