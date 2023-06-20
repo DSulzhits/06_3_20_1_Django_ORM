@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'main',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ postgres_key = os.getenv('POSTGRESSQL_KEY')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '06_3_20_1_django_ORM',
+        'NAME': 'django_students',
         'USER': 'postgres',
         'PASSWORD': postgres_key
     }
@@ -114,7 +115,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -122,7 +122,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
-
 
 MEDIA_URl = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -143,3 +142,7 @@ EMAIL_USE_SSL = True
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
  """
+
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
