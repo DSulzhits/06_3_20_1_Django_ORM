@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -8,6 +10,7 @@ from main.models import Student, Subject
 from main.services import send_deactivate_email
 
 
+@login_required
 def index(request):
     context = {
         'object_list': Student.objects.all()[:3],
@@ -16,7 +19,7 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-class StudentListView(generic.ListView):
+class StudentListView(LoginRequiredMixin, generic.ListView):
     model = Student
     extra_context = {
         'title': 'Список студентов'
@@ -28,6 +31,7 @@ class StudentListView(generic.ListView):
         return queryset
 
 
+# @login_required
 # def students(request):
 #     context = {
 #         'object_list': Student.objects.all(),
@@ -36,7 +40,7 @@ class StudentListView(generic.ListView):
 #     return render(request, 'main/students.html', context)
 
 
-class StudentDetailView(generic.DetailView):
+class StudentDetailView(LoginRequiredMixin, generic.DetailView):
     model = Student
 
     def get_context_data(self, **kwargs):
@@ -46,23 +50,24 @@ class StudentDetailView(generic.DetailView):
         return context_data
 
 
-# def student(request, pk):
-#     student_item = Student.objects.get(pk=pk)
-#     context = {
-#         'object': student_item,
-#         'title': student_item.first_name + ' ' + student_item.last_name  # или так 'title': student_item
-#     }
-#     return render(request, 'main/student.html', context)
+@login_required
+def student(request, pk):
+    student_item = Student.objects.get(pk=pk)
+    context = {
+        'object': student_item,
+        'title': student_item.first_name + ' ' + student_item.last_name  # или так 'title': student_item
+    }
+    return render(request, 'main/student.html', context)
 
 
-class StudentCreateView(generic.CreateView):
+class StudentCreateView(LoginRequiredMixin, generic.CreateView):
     model = Student
     # fields = ('first_name', 'last_name',)
     form_class = StudentForm
     success_url = reverse_lazy('main:students_list')
 
 
-class StudentUpdateView(generic.UpdateView):
+class StudentUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Student
     # fields = ('first_name', 'last_name',)
     form_class = StudentForm
@@ -86,11 +91,12 @@ class StudentUpdateView(generic.UpdateView):
         return super().form_valid(form)
 
 
-class StudentDeleteView(generic.DeleteView):
+class StudentDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Student
     success_url = reverse_lazy('main:students_list')
 
 
+@login_required
 def toggle_activity(request, pk):
     student_item = get_object_or_404(Student, pk=pk)
     if student_item.is_active:
@@ -103,6 +109,7 @@ def toggle_activity(request, pk):
     return redirect(reverse('main:student_item', args=[student_item.pk]))
 
 
+@login_required
 def contacts(request):
     if request.method == "POST":
         name = request.POST.get('name')
