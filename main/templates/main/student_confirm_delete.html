@@ -6,7 +6,7 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
-                    Уверены, что хотите удалить студента "{{ object }}"?<br>
+                    <p>Уверены, что хотите удалить студента "{{ object }}"?</p>
                     <input type="submit" class="btn btn-outline-danger" value="Уверен">
                 </form>
             </div>

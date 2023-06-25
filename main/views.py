@@ -1,5 +1,5 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -11,6 +11,7 @@ from main.services import send_deactivate_email
 
 
 @login_required
+@permission_required('main.view_student')
 def index(request):
     context = {
         'object_list': Student.objects.all()[:3],
@@ -32,6 +33,7 @@ class StudentListView(LoginRequiredMixin, generic.ListView):
 
 
 # @login_required
+# @permission_required
 # def students(request):
 #     context = {
 #         'object_list': Student.objects.all(),
@@ -60,17 +62,19 @@ def student(request, pk):
     return render(request, 'main/student.html', context)
 
 
-class StudentCreateView(LoginRequiredMixin, generic.CreateView):
+class StudentCreateView(LoginRequiredMixin, PermissionRequiredMixin, generic.CreateView):
     model = Student
     # fields = ('first_name', 'last_name',)
     form_class = StudentForm
+    permission_required = 'main.add_student'
     success_url = reverse_lazy('main:students_list')
 
 
-class StudentUpdateView(LoginRequiredMixin, generic.UpdateView):
+class StudentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, generic.UpdateView):
     model = Student
     # fields = ('first_name', 'last_name',)
     form_class = StudentForm
+    permission_required = 'main.change_student'
     success_url = reverse_lazy('main:students_list')
 
     def get_context_data(self, **kwargs):
@@ -91,9 +95,12 @@ class StudentUpdateView(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
 
-class StudentDeleteView(LoginRequiredMixin, generic.DeleteView):
+class StudentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Student
     success_url = reverse_lazy('main:students_list')
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 @login_required

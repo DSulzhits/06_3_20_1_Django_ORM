@@ -2,7 +2,9 @@
 
 {% block content %}
     <div class="col-12">
-        <a href="{% url 'main:students_create' %}" class="btn btn-primary m-2">Создать студента</a>
+        {% if perms.main.add_student %}
+            <a href="{% url 'main:students_create' %}" class="btn btn-primary m-2">Создать студента</a>
+        {% endif %}
     </div>
     {% for object in object_list %}
         {% include 'main/includes/inc_student_card.html' %}
