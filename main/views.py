@@ -4,6 +4,8 @@ from django.forms import inlineformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
+from django.conf import settings
+from django.core.cache import cache
 
 from main.forms import StudentForm, SubjectForm
 from main.models import Student, Subject
@@ -50,7 +52,15 @@ class StudentDetailView(LoginRequiredMixin, PermissionRequiredMixin, generic.Det
         context_data = super().get_context_data(**kwargs)
         # context_data['title'] = context_data['object']
         context_data['title'] = self.get_object()
-        context_data['subjects'] = self.object.subject_set.all()
+        if settings.CACHE_ENABLED:
+            key = f'subject_list_{self.object.pk}'
+            subject_list = cache.get(key)
+            if subject_list is None:
+                subject_list = self.object.subject_set.all()
+                cache.set(key, subject_list)
+        else:
+            subject_list = self.object.subject_set.all()
+        context_data['subjects'] = subject_list
         return context_data
 
 
