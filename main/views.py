@@ -42,13 +42,15 @@ class StudentListView(LoginRequiredMixin, generic.ListView):
 #     return render(request, 'main/students.html', context)
 
 
-class StudentDetailView(LoginRequiredMixin, generic.DetailView):
+class StudentDetailView(LoginRequiredMixin, PermissionRequiredMixin, generic.DetailView):
     model = Student
+    permission_required = 'main.view_student'
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         # context_data['title'] = context_data['object']
         context_data['title'] = self.get_object()
+        context_data['subjects'] = self.object.subject_set.all()
         return context_data
 
 
