@@ -1,8 +1,11 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <div class="col">
+    <div class="col-6">
         <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Информация о студенте </h4>
+            </div>
             <div class="card-body">
                 <table class="table">
                     <tr>
@@ -12,6 +15,10 @@
                     <tr>
                         <td>Фамилия</td>
                         <td>{{ object.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Почта</td>
+                        <td>{{ object.email|default:"-" }}</td>
                     </tr>
                 </table>
             </div>
@@ -24,6 +31,23 @@
                         Активировать
                     {% endif %}
                 </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Предметы студента </h4>
+            </div>
+            <div class="card-body">
+            <ul>
+                {% for subject in subjects %}
+                    <li>{{ subject }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+            <div class="card-footer">
+
             </div>
         </div>
     </div>
