@@ -5,8 +5,11 @@
                  src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
                  alt="Generic placeholder image" width="140" height="140">
             <h2>{{ object.first_name|title }} {{ object.last_name|title }}</h2>
-            <p><a class="btn btn-secondary" href="{% url 'main:student_item' object.pk %}" role="button">Посмотреть</a>
-            </p>
+            {% if perms.main.view_student %}
+                <p><a class="btn btn-secondary" href="{% url 'main:student_item' object.pk %}"
+                      role="button">Посмотреть</a>
+                </p>
+            {% endif %}
             {% if perms.main.change_student %}
                 <p><a class="btn btn-warning" href="{% url 'main:students_update' object.pk %}"
                       role="button">Изменить</a></p>
