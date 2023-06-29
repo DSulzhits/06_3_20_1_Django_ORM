@@ -1,6 +1,11 @@
-from django.core.management import BaseCommand
+import os
 
+from django.core.management import BaseCommand
+from dotenv import load_dotenv
 from users.models import User
+
+load_dotenv()
+csu_password = os.getenv('SUPERUSER_PASSWORD')
 
 
 class Command(BaseCommand):
@@ -13,5 +18,5 @@ class Command(BaseCommand):
             is_superuser=True,
         )
 
-        user.set_password('123qwe456rty')
+        user.set_password(csu_password)
         user.save()
